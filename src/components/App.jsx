@@ -10,25 +10,29 @@ export class App extends Component {
     good: 0,
     neutral: 0,
     bad: 0,
-    total: 0,
-    positive: 0,
   };
 
   onLeaveFeedback = appraisal => {
-    const newState = {
+    return this.setState({
       ...this.state,
       [appraisal]: this.state[appraisal] + 1,
-    };
-
-    const { good, neutral, bad } = newState;
-    const total = good + neutral + bad;
-    const positive = Math.round((good / total) * 100);
-    newState.total = total;
-    newState.positive = positive;
-    return this.setState(newState);
+    });
   };
 
+  countTotalFeedback() {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
+  }
+
+  countPositiveFeedbackPercentage(total) {
+    const { good } = this.state;
+    return Math.round((good / total) * 100);
+  }
+
   render() {
+    const total = this.countTotalFeedback();
+    const positive = this.countPositiveFeedbackPercentage(total);
+
     return (
       <AppStyled>
         <div className="container">
@@ -40,15 +44,15 @@ export class App extends Component {
           </Section>
 
           <Section title="Statistics">
-            {this.state.total === 0 ? (
+            {total === 0 ? (
               <Notification message="There is no feedback" />
             ) : (
               <Statistics
                 good={this.state.good}
                 neutral={this.state.neutral}
                 bad={this.state.bad}
-                total={this.state.total}
-                positivePercentage={this.state.positive}
+                total={total}
+                positivePercentage={positive}
               ></Statistics>
             )}
           </Section>
