@@ -18,9 +18,9 @@ export const App = () => {
 
   const onLeaveFeedback = appraisal => {
     const setterMap = {
-      good: setGood,
-      neutral: setNeutral,
-      bad: setBad,
+      [FeedbackOption.good]: setGood,
+      [FeedbackOption.neutral]: setNeutral,
+      [FeedbackOption.bad]: setBad,
     };
 
     setterMap[appraisal](prevAppraisal => prevAppraisal + 1);
